@@ -55,7 +55,23 @@ PRODUCTS = {
 
 PROMO_CODES = {
     "MIMO10": {"type": "percent", "value": 0.10, "description": "Giảm giá 10% tổng đơn hàng"},
-    "WELCOME50": {"type": "fixed", "value": 50000.0, "description": "Giảm ngay 50,000 VND cho khách hàng mới"}
+    "WELCOME50": {"type": "fixed", "value": 50000.0, "description": "Giảm ngay 50,000 VND cho khách hàng mới"},
+    "WINNER": {
+        "type": "percent",
+        "value": 0.15,
+        "description": "Giảm 15% cho đơn smartphone (mã chiến thắng)",
+        "categories": ["smartphone"],
+    },
+}
+
+SHIPPING_RATES = {
+    "ha noi": 30000.0,
+    "hanoi": 30000.0,
+    "hồ chí minh": 50000.0,
+    "ho chi minh": 50000.0,
+    "da nang": 40000.0,
+    "đà nẵng": 40000.0,
+    "default": 80000.0,
 }
 
 def search_electronics(query: str) -> str:
@@ -123,6 +139,11 @@ def calculate_final_price(price: float, discount_code: str) -> str:
             discount_amount = price * promo["value"]
         elif promo["type"] == "fixed":
             discount_amount = promo["value"]
+        # WINNER only applies to smartphone orders in lab scenario (price > 20M typical)
+        if code_clean == "WINNER" and price < 10_000_000:
+            applied = False
+            desc = "WINNER chỉ áp dụng đơn smartphone từ 10 triệu"
+            discount_amount = 0.0
     
     discounted_price = max(0.0, price - discount_amount)
     vat_tax = discounted_price * 0.10
@@ -141,6 +162,58 @@ def calculate_final_price(price: float, discount_code: str) -> str:
     
     return json.dumps(result, ensure_ascii=False, indent=2)
 
+
+def check_stock(product_name: str, quantity: int = 1) -> str:
+    """
+    Check if enough units are in stock for a product.
+    Args:
+        product_name: Product name (e.g. 'iPhone 15 Pro Max')
+        quantity: Number of units requested (integer)
+    """
+    name_clean = product_name.lower().strip()
+    for k, v in PRODUCTS.items():
+        if name_clean in k or k in name_clean or name_clean in v["name"].lower():
+            available = v["stock"] >= quantity
+            return json.dumps(
+                {
+                    "product": v["name"],
+                    "requested": quantity,
+                    "in_stock": available,
+                    "stock_available": v["stock"],
+                    "unit_price": f"{v['price']:,.0f} VND",
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+    return f"Không tìm thấy sản phẩm '{product_name}' để kiểm tra tồn kho."
+
+
+def calc_shipping(destination: str, weight_kg: float = 0.2) -> str:
+    """
+    Calculate shipping fee to a Vietnamese city.
+    Args:
+        destination: City name (e.g. 'Hà Nội', 'Ho Chi Minh')
+        weight_kg: Package weight in kg (default 0.2 for phones)
+    """
+    dest = destination.lower().strip()
+    base = SHIPPING_RATES.get("default", 80000.0)
+    for city, fee in SHIPPING_RATES.items():
+        if city in dest or dest in city:
+            base = fee
+            break
+    extra = max(0, weight_kg - 0.5) * 20000.0
+    total = base + extra
+    return json.dumps(
+        {
+            "destination": destination,
+            "weight_kg": weight_kg,
+            "shipping_fee": f"{total:,.0f} VND",
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+
+
 # Tool specs to expose to the ReAct agent
 TOOLS_LIST = [
     {
@@ -155,7 +228,20 @@ TOOLS_LIST = [
     },
     {
         "name": "calculate_final_price",
-        "description": "Tính toán giá bán cuối cùng sau khi áp dụng mã giảm giá và cộng thêm 10% thuế VAT. Nhận vào giá sản phẩm (số thực) và mã giảm giá (ví dụ: 'MIMO10', 'WELCOME50'). Nếu không có mã thì truyền chuỗi rỗng ''.",
+        "description": "Tính toán giá bán cuối cùng sau khi áp dụng mã giảm giá và cộng thêm 10% thuế VAT. Nhận vào giá sản phẩm (số thực) và mã giảm giá (ví dụ: 'MIMO10', 'WELCOME50', 'WINNER'). Nếu không có mã thì truyền chuỗi rỗng ''.",
         "func": calculate_final_price
     }
+]
+
+TOOLS_LIST_V2 = TOOLS_LIST + [
+    {
+        "name": "check_stock",
+        "description": "Kiểm tra tồn kho: có đủ số lượng sản phẩm không. Tham số product_name (tên đầy đủ) và quantity (số lượng, số nguyên).",
+        "func": check_stock,
+    },
+    {
+        "name": "calc_shipping",
+        "description": "Tính phí giao hàng theo thành phố Việt Nam. Tham số destination (VD: 'Hà Nội') và weight_kg (float, mặc định 0.2).",
+        "func": calc_shipping,
+    },
 ]

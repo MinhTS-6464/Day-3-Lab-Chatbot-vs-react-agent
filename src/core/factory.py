@@ -17,7 +17,8 @@ def create_provider(
     model: Optional[str] = None,
 ) -> LLMProvider:
     """Load LLM provider from .env (DEFAULT_PROVIDER, DEFAULT_MODEL, API keys)."""
-    load_dotenv()
+    root = Path(__file__).resolve().parent.parent.parent
+    load_dotenv(root / ".env", override=True)
 
     provider_name = (provider or os.getenv("DEFAULT_PROVIDER", "openai")).lower()
     model_name = model or os.getenv("DEFAULT_MODEL")

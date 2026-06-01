@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-06-01T16:44:50.881964",
+  "model": "mimo-v2.5-pro",
+  "cases": [
+    {
+      "id": "simple_math",
+      "prompt": "Khách mua 1 củ sạc giá 500.000đ và được giảm 10%. Khách cần trả bao nhiêu tiền?",
+      "chatbot": "Khách cần trả **450.000đ** (đã giảm 10% từ 500.000đ).",
+      "agent_v1": "**\n\nChào bạn! Cảm ơn bạn đã mua củ sạc tại cửa hàng. Dưới đây là chi tiết tính toán giá:\n\n| Hạng mục | Số tiền |\n|----------|---------|\n| Giá gốc | 500.000đ |\n| Giảm giá 10% (MIMO10) | -50.000đ |\n| Giá sau giảm giá | 450.000đ |\n| Thuế VAT 10% | +45.000đ |\n| **Tổng cộng cần trả** | **495.000đ** |\n\nVậy bạn cần trả **495.000đ** cho củ sạc này. Chúc bạn sử dụng vui vẻ! Nếu cần hỗ trợ gì thêm, đừng ngần ngại hỏi nhé! 😊",
+      "agent_v2": "Cảm ơn bạn đã mua củ sạc! Dưới đây là chi tiết thanh toán:\n\n| Mục | Số tiền |\n|------|---------|\n| Giá gốc | 500.000 VND |\n| Giảm giá 10% (MIMO10) | -50.000 VND |\n| Giá sau giảm | 450.000 VND |\n| Thuế VAT 10% | +45.000 VND |\n| **Tổng thanh toán** | **495.000 VND** |\n\nBạn cần trả **495.000 VND** cho đơn hàng này. Nếu cần thông tin thêm về phí ship hay chi tiết sản phẩm, hãy cho mình biết nhé! 😊"
+    },
+    {
+      "id": "multi_step_iphone",
+      "prompt": "Khách muốn mua 2 chiếc iPhone tại cửa hàng, dùng mã giảm giá 'WINNER' và giao hàng đến Hà Nội. Kiểm tra hàng, áp mã, tính ship và tổng thanh toán.",
+      "chatbot": "Để xử lý yêu cầu của bạn, tôi cần biết thêm một số thông tin vì không có dữ liệu thời gian thực:\n\n1. **Kiểm tra hàng**: Hiện tại tôi không có thông tin tồn kho thời gian thực. Bạn muốn mua iPhone model nào (iPhone 15, iPhone 14...) và dung lượng bao nhiêu?\n\n2. **Áp mã 'WINNER'**: Tôi không thể kiểm tra mã này có hợp lệ không, điều kiện áp dụng (ví dụ: giảm bao nhiêu %, áp dụng cho sản phẩm nào) hay hạn sử dụng.\n\n3. **Tính phí ship**: Tôi cần địa chỉ cụ thể tại Hà Nội (quận/huyện) để ước tính phí",
+      "agent_v1": "**\n\nChào bạn, tôi đã kiểm tra hàng và tính toán giá cho 2 chiếc iPhone 15 Pro Max như sau:\n\n📦 **Tình trạng kho hàng:**\n- Sản phẩm: iPhone 15 Pro Max (256GB)\n- Số lượng tồn kho: 5 chiếc (đủ cho đơn hàng 2 chiếc)\n- Giá niêm yết: 30.000.000 VND/chiếc\n\n💰 **Chi tiết thanh toán:**\n- Giá gốc cho 2 chiếc: 60.000.000 VND\n- Áp dụng mã giảm giá **WINNER** (giảm 15%): -9.000.000 VND\n- Giá sau giảm: 51.000.000 VND\n- Thuế VAT (10%): +5.100.000 VND\n- **TỔNG CẦN THANH TOÁN (chưa bao gồm phí ship): 56.100.000 VN",
+      "agent_v2": "Rất tiếc, tôi chưa hoàn thành được yêu cầu trong giới hạn bước. Vui lòng thử lại với tên sản phẩm và mã giảm rõ ràng."
+    }
+  ]
+}

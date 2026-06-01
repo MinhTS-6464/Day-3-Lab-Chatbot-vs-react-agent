@@ -30,7 +30,7 @@ from dotenv import load_dotenv
 from src.chatbot.baseline import ChatbotBaseline
 from src.core.factory import create_provider
 
-load_dotenv(ROOT / ".env")
+load_dotenv(ROOT / ".env", override=True)
 
 # Test cases from INSTRUCTOR_GUIDE (e-commerce scenario)
 LAB_TEST_CASES = [
