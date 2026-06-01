@@ -1,7 +1,7 @@
 # Individual Report: Lab 3 - Chatbot vs ReAct Agent
 
 - **Student Name**: Phạm Hoài Nam
-- **Student ID**: B21DCCN456
+- **Student ID**: 2A202600954
 - **Date**: 2026-06-01
 
 ---
