@@ -1,4 +1,4 @@
-# NGuyễn NGhiệp MinhMinh and Phạm Hoài Nam Lab 3: Chatbot vs ReAct Agent (Industry Edition)
+# Lab 3: Chatbot vs ReAct Agent (Industry Edition)
 
 Welcome to Phase 3 of the Agentic AI course! This lab focuses on moving from a simple LLM Chatbot to a sophisticated **ReAct Agent** with industry-standard monitoring.
 
@@ -15,8 +15,23 @@ cp .env.example .env
 pip install -r requirements.txt
 ```
 
-### 3. Directory Structure
-- `src/tools/`: Extension point for your custom tools.
+### 3. Run the project
+
+```powershell
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+# Copy .env.example to .env and set OPENAI_API_KEY (MiMo tp-...) or DEFAULT_PROVIDER=local
+
+python chatbot.py              # Baseline chatbot
+python -m src.main             # ReAct agent (v2 default, AGENT_VERSION=1 for v1)
+python run_benchmark.py        # Auto compare chatbot vs agent v1/v2
+python scripts\analyze_logs.py # Metrics from logs/
+```
+
+### 4. Directory Structure
+- `src/tools/`: Custom tools (`electronics_tools.py`)
+- `src/agent/`: `agent.py` (v1), `agent_v2.py` (v2)
+- `report/`: Group + individual reports
 
 ## 🏠 Running with Local Models (CPU)
 
